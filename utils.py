@@ -74,16 +74,13 @@ def clean_text(text):
         text (str): Raw text
         
     Returns:
-        str: Cleaned text
+        str: Cleaned text with normalized whitespace
     """
     if not text:
         return ""
     
     # Remove extra whitespace
     text = " ".join(text.split())
-    
-    # Remove special characters that might interfere with embeddings
-    # Keep alphanumeric, spaces, and common punctuation
     
     return text.strip()
 
