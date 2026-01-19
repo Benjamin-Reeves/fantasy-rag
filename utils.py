@@ -16,7 +16,7 @@ def format_player_stats(stats_dict):
     if isinstance(stats_dict, str):
         try:
             stats_dict = json.loads(stats_dict)
-        except:
+        except json.JSONDecodeError:
             return stats_dict
     
     formatted = []

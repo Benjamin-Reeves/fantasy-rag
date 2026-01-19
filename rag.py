@@ -154,6 +154,9 @@ class FantasyFootballRAG:
             dict: Answer and context
         """
         context_parts = []
+        player_results = []
+        team_results = []
+        news_results = []
         
         # Gather context from different sources
         if 'players' in include_sources:
