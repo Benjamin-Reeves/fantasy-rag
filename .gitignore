@@ -1,0 +1,43 @@
+# Python
+# Compiled source
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.swp
+
+# Virtual environment
+venv/
+env/
+.venv/
+lib/python*/site-packages/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.iml
+
+# Distribution / packaging
+.Python
+build/
+dist/
+wheels/
+*.egg-info/
+*.egg
+
+# Testing and coverage
+.tox/
+.coverage
+htmlcov/
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3
+/db.sqlite3
+
+# OS generated files
+.DS_Store
+.Trash
+
+*.env
