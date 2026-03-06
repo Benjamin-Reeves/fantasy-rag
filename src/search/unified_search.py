@@ -50,10 +50,8 @@ class UnifiedSearchOrchestrator:
         if not stats_only:
             article_results = self._search_articles(query, limit)
 
-        # Merge results
         merged_results = self.result_merger.merge(stats_results, article_results)
 
-        # Generate LLM synthesis
         synthesized_answer = self._synthesize_answer(query, merged_results)
 
         return UnifiedSearchResult(
@@ -88,7 +86,7 @@ class UnifiedSearchOrchestrator:
                     f"- {r.player_name} ({r.position}, {r.team}): Week {r.week}, Season {r.season}"
                     + (f" - {r.fantasy_points_ppr:.1f} PPR points" if r.fantasy_points_ppr is not None else "")
                     + (f" - {r.content}" if r.content else "")
-                    for r in merged_results.stats_results[:5]  # Limit for token efficiency
+                    for r in merged_results.stats_results[:10]
                 ]
             )
         else:
@@ -100,7 +98,7 @@ class UnifiedSearchOrchestrator:
             articles_data = "\n\n".join(
                 [
                     f"- {r.article_title} ({r.article_url}):\n  {r.content[:300]}..."
-                    for r in merged_results.article_results[:3]  # Limit for token efficiency
+                    for r in merged_results.article_results[:5]
                 ]
             )
         else:
