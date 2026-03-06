@@ -1,4 +1,7 @@
-# cli.py
+import os
+
+# Disable tokenizers parallelism to avoid fork warnings
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 from rich.console import Console
 
@@ -19,13 +22,11 @@ def main():
     console.print("Type 'exit', 'quit', or press Ctrl+C to stop")
     console.print("-" * 50)
 
-    # Initialize core services
     database = DatabaseManager()
     parser = QueryParser(database_manager=database)
     llm_service = LlmService()
     embedding_model = EmbeddingModel()
 
-    # Initialize search layer
     stats_search = StatsSearch(parser, database)
     article_search = ArticleSearch(database, embedding_model)
     result_merger = ResultMerger()
@@ -44,10 +45,8 @@ def main():
             if not question.strip():
                 continue
 
-            # Execute unified search
             result = orchestrator.search(question, limit=10)
 
-            # Format and display with Rich
             format_unified_result(result, console)
 
         except KeyboardInterrupt:

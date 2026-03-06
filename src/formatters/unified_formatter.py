@@ -16,14 +16,13 @@ def format_unified_result(result: UnifiedSearchResult, console: Console):
         console: Rich Console instance
     """
     
-    # Query header
     console.print(f"\n[bold cyan]Query:[/bold cyan] {result.query}\n")
 
     if result.synthesized_answer:
         console.print("[bold magenta]🤖 Analysis:[/bold magenta]")
         analysis_panel = Panel(
             Markdown(result.synthesized_answer),
-            border_style="magenta",
+            border_style="blue",
             padding=(1, 2),
         )
         console.print(analysis_panel)

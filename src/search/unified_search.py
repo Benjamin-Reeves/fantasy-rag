@@ -1,6 +1,5 @@
 """Unified search orchestrator for parallel stats and article search."""
 
-import concurrent.futures
 from typing import List
 
 from services.llm_service import LlmService
@@ -11,8 +10,6 @@ from search.stats_search import StatsSearch
 
 
 class UnifiedSearchOrchestrator:
-    """Orchestrate unified search across stats and articles with LLM synthesis."""
-
     def __init__(
         self,
         stats_search: StatsSearch | None = None,
@@ -46,26 +43,12 @@ class UnifiedSearchOrchestrator:
         """
         stats_results: List[StatsResult] = []
         article_results: List[ArticleResult] = []
+        
+        if not articles_only:
+            stats_results = self._search_stats(query, limit)
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-            futures = {}
-
-            if not articles_only:
-                futures["stats"] = executor.submit(self._search_stats, query, limit)
-
-            if not stats_only:
-                futures["articles"] = executor.submit(self._search_articles, query, limit)
-
-            for source, future in futures.items():
-                try:
-                    result = future.result(timeout=30)  # 30 second timeout
-                    if source == "stats":
-                        stats_results = result
-                    elif source == "articles":
-                        article_results = result
-                except Exception as e:
-                    print(f"Error in {source} search: {e}")
-                    # Continue with partial results
+        if not stats_only:
+            article_results = self._search_articles(query, limit)
 
         # Merge results
         merged_results = self.result_merger.merge(stats_results, article_results)
