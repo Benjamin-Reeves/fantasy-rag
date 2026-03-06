@@ -5,7 +5,6 @@ from datetime import datetime
 @dataclass
 class PlayerStatsDocument:
     content: str
-    embedding: list[float]
 
     player_name: str
     position: str

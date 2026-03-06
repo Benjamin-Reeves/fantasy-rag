@@ -2,8 +2,10 @@ import nflreadpy as nfl
 
 from stats.ingestion import IngestionManager
 
-nfl_reader = nfl.load_player_stats(seasons=[2025], summary_level="week")
-print(f"Loaded {len(nfl_reader)} player stats for 2025 season.")
+year = 2019
+
+nfl_reader = nfl.load_player_stats(seasons=[year], summary_level="week")
+print(f"Loaded {len(nfl_reader)} player stats for {year} season.")
 
 stat_ingestion: IngestionManager = IngestionManager()
 

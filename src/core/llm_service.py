@@ -1,27 +1,27 @@
 from anthropic import Anthropic
-from pydantic import BaseModel
 
 from core.config import settings
 
 
-class LlmService(BaseModel):
+class LlmService:
     anthropic_api_key: str
     llm: Anthropic
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self):
         self.anthropic_api_key = settings.anthropic_api_key
         self.llm = Anthropic(api_key=self.anthropic_api_key)
 
-    def complete_message(self, prompt: str) -> str:
+    def complete_message(self, prompt: str, max_tokens: int = 1000, temperature: float = 0.2) -> str:
         try:
-            response = self.llm.completions.create(
+            response = self.llm.messages.create(
                 model="claude-haiku-4-5-20251001",
-                prompt=prompt,
-                max_tokens_to_sample=1000,
-                temperature=0.6,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
             )
-            return response.completion.strip()
+            return response.content[0].text.strip()
         except Exception as e:
             print(f"Error generating completion: {e}")
             return ""

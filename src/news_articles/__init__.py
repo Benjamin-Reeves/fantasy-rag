@@ -1,0 +1,2 @@
+"""News article ingestion package."""
+

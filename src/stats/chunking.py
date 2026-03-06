@@ -4,15 +4,13 @@ class ChunkingStats:
         Convert a player's weekly stats into a readable text chunk.
 
         This is the TEXT that will be:
-        1. Converted to an embedding (for search)
+        1. Stored in the database
         2. Retrieved and shown to the LLM (for answering)
         """
 
-        # Skip if not fantasy-relevant
         if stat["position"] not in ["QB", "RB", "WR", "TE"]:
             return None
 
-        # Build the chunk as a readable string
         chunk = f"""
         {stat['player_display_name']} - {stat['position']} ({stat['team']})
         Week {stat['week']}, {stat['season']} Season

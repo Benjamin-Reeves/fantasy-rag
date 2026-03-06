@@ -1,42 +1,61 @@
 # cli.py
 
+from rich.console import Console
+
 from core.database import DatabaseManager
+from core.embedding_model import EmbeddingModel
+from core.llm_service import LlmService
+from core.query_parser import QueryParser
+from formatters.unified_formatter import format_unified_result
+from search.article_search import ArticleSearch
+from search.result_merger import ResultMerger
+from search.stats_search import StatsSearch
+from search.unified_search import UnifiedSearchOrchestrator
 
 
 def main():
-    print("Fantasy RAG CLI")
-    print("Type 'exit', 'quit', or press Ctrl+C to stop")
-    print("-" * 50)
-    
+    console = Console()
+    console.print("[bold cyan]Fantasy RAG CLI[/bold cyan]")
+    console.print("Type 'exit', 'quit', or press Ctrl+C to stop")
+    console.print("-" * 50)
+
+    # Initialize core services
+    database = DatabaseManager()
+    parser = QueryParser(database_manager=database)
+    llm_service = LlmService()
+    embedding_model = EmbeddingModel()
+
+    # Initialize search layer
+    stats_search = StatsSearch(parser, database)
+    article_search = ArticleSearch(database, embedding_model)
+    result_merger = ResultMerger()
+    orchestrator = UnifiedSearchOrchestrator(
+        stats_search, article_search, result_merger, llm_service
+    )
+
     while True:
         try:
-            # Get user input
             question = input("\nYour question: ")
-            
-            # Check for exit commands
-            if question.lower() in ['exit', 'quit', 'q']:
-                print("Goodbye!")
+
+            if question.lower() in ["exit", "quit", "q"]:
+                console.print("[yellow]Goodbye![/yellow]")
                 break
-            
-            # Skip empty input
+
             if not question.strip():
                 continue
-            
-            # Process the question (placeholder for now)
-            print(f"You asked: {question}")
-            database = DatabaseManager()
-            content = database.search(question)
-            
-            print(f"Search results: {content}")
-            
+
+            # Execute unified search
+            result = orchestrator.search(question, limit=10)
+
+            # Format and display with Rich
+            format_unified_result(result, console)
+
         except KeyboardInterrupt:
-            # Handle Ctrl+C
-            print("\n\nGoodbye!")
+            console.print("\n[yellow]Goodbye![/yellow]")
             break
-        except EOFError:
-            # Handle Ctrl+D
-            print("\n\nGoodbye!")
-            break
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+
 
 if __name__ == "__main__":
     main()
