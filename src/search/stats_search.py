@@ -2,8 +2,8 @@
 
 from typing import Any, List
 
-from core.database import DatabaseManager
-from core.query_parser import QueryParser
+from services.database import DatabaseManager
+from services.query_parser import QueryParser
 from search.models import StatsResult
 
 

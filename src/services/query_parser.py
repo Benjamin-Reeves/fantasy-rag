@@ -1,7 +1,7 @@
 import re
 
-from core.database import DatabaseManager
-from core.llm_service import LlmService
+from services.database import DatabaseManager
+from services.llm_service import LlmService
 
 
 class QueryParser:

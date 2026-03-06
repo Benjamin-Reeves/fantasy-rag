@@ -4,7 +4,7 @@
 import sys
 sys.path.insert(0, 'src')
 
-from core.database import DatabaseManager
+from services.database import DatabaseManager
 
 def clear_data():
     """Clear all existing player stats data"""

@@ -6,7 +6,7 @@ from psycopg2 import sql
 from psycopg2 import extensions
 from psycopg2.extras import Json, execute_values, register_uuid
 
-from core.config import settings
+from services.config import settings
 
 
 class DatabaseManager:

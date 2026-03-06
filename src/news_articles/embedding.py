@@ -1,4 +1,4 @@
-from core.embedding_model import EmbeddingModel
+from services.embedding_model import EmbeddingModel
 
 
 class NewsArticleEmbedder:

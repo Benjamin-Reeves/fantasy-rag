@@ -4,8 +4,6 @@ from datetime import datetime
 
 @dataclass
 class PlayerStatsDocument:
-    content: str
-
     player_name: str
     position: str
     week: int

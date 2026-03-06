@@ -3,7 +3,7 @@
 import concurrent.futures
 from typing import List
 
-from core.llm_service import LlmService
+from services.llm_service import LlmService
 from search.article_search import ArticleSearch
 from search.models import ArticleResult, MergedResults, StatsResult, UnifiedSearchResult
 from search.result_merger import ResultMerger

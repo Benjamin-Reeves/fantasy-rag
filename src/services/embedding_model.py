@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer
 
-from core.config import settings
+from services.config import settings
 
 
 class EmbeddingModel:

@@ -1,6 +1,6 @@
 from anthropic import Anthropic
 
-from core.config import settings
+from services.config import settings
 
 
 class LlmService:

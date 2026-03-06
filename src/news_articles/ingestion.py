@@ -3,8 +3,8 @@ from typing import Any
 
 from psycopg2.extras import execute_values
 
-from core.database import DatabaseManager
-from core.scraper import WebsiteScraper
+from services.database import DatabaseManager
+from services.scraper import WebsiteScraper
 from news_articles.chunking import NewsArticleChunker
 from news_articles.embedding import NewsArticleEmbedder
 
@@ -125,31 +125,6 @@ class NewsArticleIngestion:
     def ingest_site(self, start_url: str, max_pages: int = 10, follow_links: bool = True) -> dict[str, int]:
         pages = self.scraper.scrape_site(start_url=start_url, max_pages=max_pages, follow_links=follow_links)
         return self.ingest_urls([page.source_url for page in pages])
-
-    def query_similar_content(self, query: str, limit: int = 10) -> list[dict[str, Any]]:
-        """Semantic retrieval over stored article chunks."""
-        safe_limit = max(1, min(int(limit), 50))
-        query_embedding = self.embedder.embed_text(query)
-        if not query_embedding:
-            return []
-
-        try:
-            vector_literal = self.database_manager._to_vector_literal(query_embedding)
-        except ValueError:
-            return []
-
-        sql_query = f"""
-            SELECT
-                article_url,
-                article_title,
-                chunk_int,
-                content,
-                embedding <=> '{vector_literal}'::vector AS distance
-            FROM article_documents
-            ORDER BY embedding <=> '{vector_literal}'::vector
-            LIMIT {safe_limit}
-        """
-        return self.database_manager.search(sql_query=sql_query)
 
     @staticmethod
     def _parse_published_date(raw_published_time: Any) -> date | None:

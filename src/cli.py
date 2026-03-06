@@ -2,10 +2,10 @@
 
 from rich.console import Console
 
-from core.database import DatabaseManager
-from core.embedding_model import EmbeddingModel
-from core.llm_service import LlmService
-from core.query_parser import QueryParser
+from services.database import DatabaseManager
+from services.embedding_model import EmbeddingModel
+from services.llm_service import LlmService
+from services.query_parser import QueryParser
 from formatters.unified_formatter import format_unified_result
 from search.article_search import ArticleSearch
 from search.result_merger import ResultMerger

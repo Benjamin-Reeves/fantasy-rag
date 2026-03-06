@@ -24,7 +24,7 @@ class NewsArticleChunker:
             raw_end = min(start + self.max_chars, len(normalized))
             end = raw_end
 
-            # Try to end on a whitespace boundary for cleaner chunk text.
+            # wanna end on a whitespace boundary for cleaner chunk text.
             if raw_end < len(normalized):
                 boundary = normalized.rfind(" ", start + self.min_chars, raw_end)
                 if boundary != -1:
@@ -34,8 +34,9 @@ class NewsArticleChunker:
             if not window:
                 break
 
+            # we don't want something to short, so we will just add to the last 
+            # chunk
             if len(window) < self.min_chars and chunks:
-                # Merge short trailing window to avoid low-signal tiny chunks.
                 chunks[-1] = f"{chunks[-1]} {window}"
                 break
 

@@ -2,8 +2,8 @@
 
 from typing import Any, List
 
-from core.database import DatabaseManager
-from core.embedding_model import EmbeddingModel
+from services.database import DatabaseManager
+from services.embedding_model import EmbeddingModel
 from search.models import ArticleResult
 
 
